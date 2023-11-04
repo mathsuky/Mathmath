@@ -57,3 +57,5 @@ export default {
     <v-main> <router-view /></v-main>
   </v-app>
 </template>
+
+<style scoped></style>
