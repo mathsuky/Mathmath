@@ -10,41 +10,41 @@
         \frac{-b\pm\sqrt{b^{2}-4ac}}{2a} \tag{1} \] です。
       </p>
     </div>
-    <div class="problem-answer"><h2>解説</h2></div>
+    <div class="problem-answer">
+      <h2>解説</h2>
+      <p>二次方程式の解の公式ですわよー</p>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  computed: {
-    id() {
-      return this.$route.params.id
-    }
-  },
   mounted() {
-    // const script = document.createElement('script')
-    // script.type = 'text/javascript'
-    // script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
-    // script.text = `
-    //   MathJax = {
-    //     tex: {
-    //       inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
-    //       displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
-    //       processEscapes: true,
-    //       processEnvironments: true,
-    //       packages: ['base', 'ams']
-    //     },
-    //     svg: {
-    //       fontCache: 'global'
-    //     }
-    //   };
-    // `
-    // document.getElementsByTagName('head')[0].appendChild(script)
+    if (window.MathJax) {
+      window.MathJax.Hub.Config({
+        TeX: { equationNumbers: { autoNumber: 'AMS' } },
+        tex2jax: {
+          inlineMath: [
+            ['$', '$'],
+            ['\\(', '\\)']
+          ],
+          displayMath: [
+            ['$$', '$$'],
+            ['\\[', '\\]']
+          ],
+          processEscapes: true
+        },
+        'HTML-CSS': { matchFontHeight: false },
+        displayAlign: 'center',
+        displayIndent: '2em'
+      })
+      window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
+    }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .problem-title {
   text-align: center;
 }
