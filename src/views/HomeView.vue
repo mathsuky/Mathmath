@@ -4,8 +4,7 @@
       <h1>Welcome to MathBox</h1>
     </div>
     <div class="content">
-      <p>このWebアプリでは様々な魅力的な問題に出会うことができます。\\frac{a_i}{1+x}</p>
-      <!-- <div v-katex="'\\frac{a_i}{1+x} \\begin{equation}\\end{equation}'"></div> -->
+      <p>このWebアプリでは様々な魅力的な問題に出会うことができます</p>
     </div>
   </div>
   <div class="container">

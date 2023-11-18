@@ -13,7 +13,12 @@ export default {
         icon: 'mdi-home',
         title: 'ABOUT',
         link: '/about'
-      }
+      },
+      {
+        icon: 'mdi-home',
+        title: 'CREATEProblem',
+        link: '/createproblem'
+      },
     ]
   }),
   mounted() {
