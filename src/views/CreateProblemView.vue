@@ -2,72 +2,81 @@
   <div class="container">
     <v-container>
       <v-container>
-        <v-stepper :items="['入力', '確認']">
-          <template v-slot:item>
-            <v-text-field
-              :counter="30"
-              label="タイトル"
-              placeholder="問題のタイトルを入力"
-              required
-              class="mb-3"
-              v-model="problemTitle"
-            ></v-text-field>
-            <v-textarea
-              label="問題文"
-              placeholder="# Markdown+LaTeXで書けます"
-              v-model="questionText"
-            ></v-textarea>
-            <v-card title="問題文のプレビュー" variant="outlined" class="mb-6"
-              ><div class="preview" v-html="compiledMarkdown(questionText)"></div
-            ></v-card>
-            <v-text-field
-              :counter="100"
-              label="説明"
-              placeholder="補足説明があれば入力"
-              required
-              class="mb-3"
-              v-model="description"
-            ></v-text-field>
-            <v-textarea
-              label="解答や解説"
-              placeholder="# Markdown+LaTeXで書けます"
-              v-model="answerExplanation"
-            ></v-textarea>
-            <v-card title="解答解説のプレビュー" variant="outlined" class="mb-6"
-              ><div class="preview" v-html="compiledMarkdown(answerExplanation)"></div
-            ></v-card>
-          </template>
-          <template v-slot:item2>
-            <div class="summaryItemCaption">タイトル</div>
-            <div class="summaryItemContent" v-if="problemTitle">{{ problemTitle }}</div>
-            <div class="summaryItemContent" style="color: gray" v-else>
-              タイトルは入力されていません
-            </div>
-            <div class="summaryItemCaption">問題文</div>
-            <div
-              class="summaryItemContent"
-              v-if="questionText"
-              v-html="compiledMarkdown(questionText)"
-            ></div>
-            <div class="summaryItemContent" style="color: gray" v-else>
-              問題文は入力されていません
-            </div>
-            <div class="summaryItemCaption">説明</div>
-            <div class="summaryItemContent" v-if="description">{{ description }}</div>
-            <div class="summaryItemContent" style="color: gray" v-else>
-              説明は入力されていません
-            </div>
-            <div class="summaryItemCaption">解答解説</div>
-            <div
-              class="summaryItemContent"
-              v-if="answerExplanation"
-              v-html="compiledMarkdown(answerExplanation)"
-            ></div>
-            <div class="summaryItemContent" style="color: gray" v-else>
-              解答解説は入力されていません
-            </div>
-          </template>
-        </v-stepper>
+        <v-form ref="testForm">
+          <v-stepper :items="['入力', '確認']">
+            <template v-slot:item.1>
+              <v-text-field
+                :counter="50"
+                :rules="$rules.problemTitle"
+                label="タイトル"
+                placeholder="問題のタイトルを入力"
+                required
+                class="mb-3"
+                v-model="problemTitle"
+              ></v-text-field>
+              <v-textarea
+                label="問題文"
+                :counter="1000"
+                :rules="$rules.problemText"
+                placeholder="# Markdown+LaTeXで書けます"
+                v-model="problemText"
+              ></v-textarea>
+              <v-card title="問題文のプレビュー" variant="outlined" class="mb-6"
+                ><div class="preview" v-html="compiledMarkdown(problemText)"></div
+              ></v-card>
+              <v-text-field
+                :counter="200"
+                :rules="$rules.description"
+                label="説明"
+                placeholder="補足説明があれば入力"
+                required
+                class="mb-3"
+                v-model="description"
+              ></v-text-field>
+              <v-textarea
+                label="解答や解説"
+                :counter="1000"
+                :rules="$rules.answerExplanation"
+                placeholder="# Markdown+LaTeXで書けます"
+                v-model="answerExplanation"
+              ></v-textarea>
+              <v-card title="解答解説のプレビュー" variant="outlined" class="mb-6"
+                ><div class="preview" v-html="compiledMarkdown(answerExplanation)"></div
+              ></v-card>
+            </template>
+            <template v-slot:item.2>
+              <div class="summaryItemCaption">タイトル</div>
+              <div class="summaryItemContent" v-if="problemTitle">{{ problemTitle }}</div>
+              <div class="summaryItemContent" style="color: red" v-else>
+                タイトルは入力されていません。この項目は必須です。
+              </div>
+              <div class="summaryItemCaption">問題文</div>
+              <div
+                class="summaryItemContent"
+                v-if="problemText"
+                v-html="compiledMarkdown(problemText)"
+              ></div>
+              <div class="summaryItemContent" style="color: red" v-else>
+                問題文は入力されていません。この項目は必須です。
+              </div>
+              <div class="summaryItemCaption">説明</div>
+              <div class="summaryItemContent" v-if="description">{{ description }}</div>
+              <div class="summaryItemContent" style="color: gray" v-else>
+                説明は入力されていません。
+              </div>
+              <div class="summaryItemCaption">解答解説</div>
+              <div
+                class="summaryItemContent"
+                v-if="answerExplanation"
+                v-html="compiledMarkdown(answerExplanation)"
+              ></div>
+              <div class="summaryItemContent" style="color: red" v-else>
+                解答解説は入力されていません。この項目は必須です。
+              </div>
+              <v-btn @click="showMessage" color="success">submit</v-btn>
+            </template>
+          </v-stepper>
+        </v-form>
       </v-container>
     </v-container>
   </div>
@@ -78,14 +87,29 @@ import MarkdownIt from 'markdown-it'
 import markdownItTexmath from 'markdown-it-texmath'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
+import { isWithinLimit } from '@/workers/isWithinLimit'
 
 export default {
   data() {
     return {
       problemTitle: '',
       description: '',
-      questionText: '',
+      problemText: '',
       answerExplanation: ''
+    }
+  },
+  computed: {
+    isFormValid() {
+      return (
+        this.problemTitle &&
+        this.problemText &&
+        this.description &&
+        this.answerExplanation &&
+        isWithinLimit(this.problemTitle, 50) &&
+        isWithinLimit(this.problemText, 1000) &&
+        isWithinLimit(this.description, 200) &&
+        isWithinLimit(this.answerExplanation, 1000)
+      )
     }
   },
   methods: {
@@ -93,6 +117,19 @@ export default {
       const md = new MarkdownIt()
       md.use(markdownItTexmath, { engine: katex })
       return md.render(markdownText)
+    },
+    clearForm() {
+      this.problemTitle = ''
+      this.description = ''
+      this.problemText = ''
+      this.answerExplanation = ''
+    },
+    showMessage() {
+      if (this.isFormValid) {
+        alert('正しく送信されました。')
+        // this.clearForm()
+        this.$router.push('/')
+      } else alert('必要な項目が全て入力されていません。')
     }
   },
   mounted() {

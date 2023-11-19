@@ -12,7 +12,7 @@ import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import '@mdi/font/css/materialdesignicons.css' // MDIのCSSをインポート
 
-
+import rules from '@/workers/rules'
 
 const vuetify = createVuetify({
   components,
@@ -23,6 +23,8 @@ const vuetify = createVuetify({
 })
 
 const app = createApp(App)
+
+app.config.globalProperties.$rules = rules
 
 app.use(vuetify)
 app.use(createPinia())
