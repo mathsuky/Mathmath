@@ -15,13 +15,11 @@
   </v-container>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    title: 'Title',
-    question: 'Question',
-    answer: 'Answer',
-    showAnswer: false
-  })
-}
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const title = ref('Title')
+const question = ref('Question')
+const answer = ref('Answer')
+const showAnswer = ref(false)
 </script>
