@@ -13,6 +13,10 @@ const rules = {
   answerExplanation: [
     (v: string) => !!v || '解答解説は必須です',
     (v: string) => isWithinLimit(v, 50) || '解答解説は1000文字までです'
+  ],
+  description: [
+    (v: string) => !!v || '説明は必須です',
+    (v: string) => isWithinLimit(v, 50) || '説明は50文字までです'
   ]
 }
 

@@ -1,5 +1,6 @@
 {
   "files": [],
+  "include": ["src/**/*"],
   "references": [
     {
       "path": "./tsconfig.node.json"
@@ -10,5 +11,12 @@
     {
       "path": "./tsconfig.vitest.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "baseUrl": ".", // このプロジェクトのベースURLを指定します。"."はプロジェクトのルートディレクトリを指します。
+    "paths": {
+      "@/*": ["src/*"] // "@"エイリアスを"src"ディレクトリにマッピングします。これにより、"@/workers/isWithinLimit.ts"は"src/workers/isWithinLimit.ts"を指すようになります。
+    },
+    "esModuleInterop": true
+  }
 }

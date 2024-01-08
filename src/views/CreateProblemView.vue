@@ -7,7 +7,7 @@
             <template v-slot:item.1>
               <v-text-field
                 :counter="50"
-                :rules="$rules.problemTitle"
+                :rules="rules.problemTitle"
                 label="タイトル"
                 placeholder="問題のタイトルを入力"
                 required
@@ -17,7 +17,7 @@
               <v-textarea
                 label="問題文"
                 :counter="1000"
-                :rules="$rules.problemText"
+                :rules="rules.problemText"
                 placeholder="# Markdown+LaTeXで書けます"
                 v-model="problemText"
               ></v-textarea>
@@ -26,7 +26,7 @@
               ></v-card>
               <v-text-field
                 :counter="200"
-                :rules="$rules.description"
+                :rules="rules.description"
                 label="説明"
                 placeholder="補足説明があれば入力"
                 required
@@ -36,7 +36,7 @@
               <v-textarea
                 label="解答や解説"
                 :counter="1000"
-                :rules="$rules.answerExplanation"
+                :rules="rules.answerExplanation"
                 placeholder="# Markdown+LaTeXで書けます"
                 v-model="answerExplanation"
               ></v-textarea>
@@ -82,79 +82,78 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import MarkdownIt from 'markdown-it'
 import markdownItTexmath from 'markdown-it-texmath'
 import katex from 'katex'
 import 'katex/dist/katex.min.css'
 import { isWithinLimit } from '@/workers/isWithinLimit'
+import rules from '@/workers/rules'
 
-export default {
-  data() {
-    return {
-      problemTitle: '',
-      description: '',
-      problemText: '',
-      answerExplanation: ''
-    }
-  },
-  computed: {
-    isFormValid() {
-      return (
-        this.problemTitle &&
-        this.problemText &&
-        this.description &&
-        this.answerExplanation &&
-        isWithinLimit(this.problemTitle, 50) &&
-        isWithinLimit(this.problemText, 1000) &&
-        isWithinLimit(this.description, 200) &&
-        isWithinLimit(this.answerExplanation, 1000)
-      )
-    }
-  },
-  methods: {
-    compiledMarkdown(markdownText) {
-      const md = new MarkdownIt()
-      md.use(markdownItTexmath, { engine: katex })
-      return md.render(markdownText)
-    },
-    clearForm() {
-      this.problemTitle = ''
-      this.description = ''
-      this.problemText = ''
-      this.answerExplanation = ''
-    },
-    showMessage() {
-      if (this.isFormValid) {
-        alert('正しく送信されました。')
-        // this.clearForm()
-        this.$router.push('/')
-      } else alert('必要な項目が全て入力されていません。')
-    }
-  },
-  mounted() {
-    if (window.MathJax) {
-      window.MathJax.Hub.Config({
-        TeX: { equationNumbers: { autoNumber: 'AMS' } },
-        tex2jax: {
-          inlineMath: [
-            ['$', '$'],
-            ['\\(', '\\)']
-          ],
-          displayMath: [
-            ['$$', '$$'],
-            ['\\[', '\\]']
-          ],
-          processEscapes: true
-        },
-        'HTML-CSS': { matchFontHeight: false },
-        displayAlign: 'center',
-        displayIndent: '2em'
-      })
-      window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
-    }
-  }
+const problemTitle = ref('')
+const description = ref('')
+const problemText = ref('')
+const answerExplanation = ref('')
+
+const isFormValid = computed(
+  () =>
+    problemTitle.value &&
+    problemText.value &&
+    description.value &&
+    answerExplanation.value &&
+    isWithinLimit(problemTitle.value, 50) &&
+    isWithinLimit(problemText.value, 1000) &&
+    isWithinLimit(description.value, 200) &&
+    isWithinLimit(answerExplanation.value, 1000)
+)
+
+const compiledMarkdown = (markdownText: string) => {
+  const md = new MarkdownIt()
+  md.use(markdownItTexmath, { engine: katex })
+  return md.render(markdownText)
 }
+
+const clearForm = () => {
+  problemTitle.value = ''
+  description.value = ''
+  problemText.value = ''
+  answerExplanation.value = ''
+}
+
+const router = useRouter()
+
+const showMessage = () => {
+  if (isFormValid.value) {
+    alert('正しく送信されました。')
+    clearForm()
+    router.push('/')
+  } else alert('必要な項目が全て入力されていません。')
+}
+
+onMounted(() => {
+  if (window.MathJax) {
+    window.MathJax.Hub.Config({
+      TeX: { equationNumbers: { autoNumber: 'AMS' } },
+      tex2jax: {
+        inlineMath: [
+          ['$', '$'],
+          ['\\(', '\\)']
+        ],
+        displayMath: [
+          ['$$', '$$'],
+          ['\\[', '\\]']
+        ],
+        processEscapes: true
+      },
+      'HTML-CSS': { matchFontHeight: false },
+      displayAlign: 'center',
+      displayIndent: '2em'
+    })
+    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
+  }
+})
 </script>
 
 <style>

@@ -1,47 +1,24 @@
-<script lang="ts">
-export default {
-  name: 'App',
-  data: () => ({
-    drawer: false,
-    navs: [
-      {
-        icon: 'mdi-home',
-        title: 'HOME',
-        link: '/'
-      },
-      {
-        icon: 'mdi-home',
-        title: 'ABOUT',
-        link: '/about'
-      },
-      {
-        icon: 'mdi-home',
-        title: 'CREATEProblem',
-        link: '/createproblem'
-      },
-    ]
-  }),
-  mounted() {
-    // const script = document.createElement('script')
-    // script.type = 'text/javascript'
-    // script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML'
-    // script.text = `
-    //   MathJax = {
-    //     tex: {
-    //       inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
-    //       displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
-    //       processEscapes: true,
-    //       processEnvironments: true,
-    //       packages: ['base', 'ams']
-    //     },
-    //     svg: {
-    //       fontCache: 'global'
-    //     }
-    //   };
-    // `
-    // document.getElementsByTagName('head')[0].appendChild(script)
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const drawer = ref(false)
+const navs = ref([
+  {
+    icon: 'mdi-home',
+    title: 'HOME',
+    link: '/'
+  },
+  {
+    icon: 'mdi-home',
+    title: 'ABOUT',
+    link: '/about'
+  },
+  {
+    icon: 'mdi-home',
+    title: 'CREATEProblem',
+    link: '/createproblem'
   }
-}
+])
 </script>
 
 <template>

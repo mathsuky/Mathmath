@@ -67,68 +67,44 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  data() {
-    return {
-      // image_src: require('../assets/target.jpg'),
-      Newproblems: [
-        {
-          title: '問題1',
-          id: 1,
-          img: 'https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg'
-        },
-        {
-          title: '問題2',
-          id: 2,
-          img: 'mdi-numeric-1-circle-outline'
-        },
-        {
-          title: '問題3',
-          id: 3,
-          img: 'mdi-numeric-1-circle-outline'
-        }
-      ],
-      RecommendProblems: [
-        {
-          title: '問題4',
-          id: 4,
-          img: 'https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg'
-        },
-        {
-          title: '問題5',
-          id: 5,
-          img: 'mdi-numeric-1-circle-outline'
-        },
-        {
-          title: '問題6',
-          id: 6,
-          img: 'mdi-numeric-1-circle-outline'
-        }
-      ]
-    }
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const Newproblems = ref([
+  {
+    title: '問題1',
+    id: 1,
+    img: 'https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg'
   },
-  mounted() {
-    // const script = document.createElement('script')
-    // script.type = 'text/javascript'
-    // script.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js?config=TeX-MML-AM_CHTML'
-    // script.text = `
-    //   MathJax = {
-    //     tex: {
-    //       inlineMath: [['$', '$'], ['\\\\(', '\\\\)']],
-    //       displayMath: [['$$', '$$'], ['\\\\[', '\\\\]']],
-    //       processEscapes: true,
-    //       processEnvironments: true,
-    //       packages: ['base', 'ams']
-    //     },
-    //     svg: {
-    //       fontCache: 'global'
-    //     }
-    //   };
-    // `
-    // document.getElementsByTagName('head')[0].appendChild(script)
+  {
+    title: '問題2',
+    id: 2,
+    img: 'mdi-numeric-1-circle-outline'
+  },
+  {
+    title: '問題3',
+    id: 3,
+    img: 'mdi-numeric-1-circle-outline'
   }
-}
+])
+
+const RecommendProblems = ref([
+  {
+    title: '問題4',
+    id: 4,
+    img: 'https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg'
+  },
+  {
+    title: '問題5',
+    id: 5,
+    img: 'mdi-numeric-1-circle-outline'
+  },
+  {
+    title: '問題6',
+    id: 6,
+    img: 'mdi-numeric-1-circle-outline'
+  }
+])
 </script>
 
 <style scoped>
