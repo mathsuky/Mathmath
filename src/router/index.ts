@@ -23,7 +23,7 @@ const router = createRouter({
       component: ProblemView
     },
     {
-      path: '/createproblem',
+      path: '/problem/new',
       name: 'create',
       component: CreateProblemView
     }

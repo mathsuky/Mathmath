@@ -1,79 +1,99 @@
 <template>
-  <!-- <div>
-    <div class="problem-title">
-      <h1>Enjoy the Challenge!</h1>
-    </div>
-  </div> -->
   <v-container>
-    <v-card>
-      <div class="centerize">
-        <v-card-title class="add-space"
-          ><h1>{{ title }}</h1></v-card-title
-        >
+    <showQuestion :problem="problem" :isShowDetail="true" />
+    <v-divider class="mt-5 mb-2"></v-divider>
+    <v-btn
+      class="mx-7 mb-4"
+      :append-icon="showAnswer ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+      variant="plain"
+      @click="showAnswer = !showAnswer"
+      >{{ showAnswer ? '解答とコメントを非表示にする' : '解答とコメントを表示する' }}</v-btn
+    >
+    <div v-if="showAnswer">
+      <div class="text-h5 font-weight-bold ml-7">解答解説</div>
+      <v-divider class="mx-7 my-2"></v-divider>
+      <div class="px-4">
+        <MdPreview :modelValue="problem.problemContent" :previewTheme="previewTheme" />
       </div>
-
-      <v-card-text class="add-space"
-        ><div class="preview" v-html="compiledMarkdown(problemText)"></div
-      ></v-card-text>
-      <v-card-actions class="add-space">
-        <v-btn color="primary" @click="showAnswer = !showAnswer">
-          {{ showAnswer ? 'Hide' : 'Show' }} Answer
-        </v-btn>
-      </v-card-actions>
-      <v-slide-y-transition>
-        <v-card-text class="add-space" v-show="showAnswer"
-          ><div class="preview" v-html="compiledMarkdown(answerExplanation)"></div
-        ></v-card-text>
-      </v-slide-y-transition>
-    </v-card>
+      <div class="text-h5 font-weight-bold ml-7">{{ comments.length }}件のコメント</div>
+      <v-btn
+        class="mx-7 mt-2"
+        append-icon="mdi-comment"
+        variant="tonal"
+        color="blue"
+        @click="showModal = true"
+        >コメントする</v-btn
+      >
+      <v-dialog v-model="showModal" max-width="80%">
+        <v-card>
+          <v-card-title>
+            <span class="headline">コメントを投稿する</span>
+          </v-card-title>
+          <v-card-text>
+            <MdEditor v-model="newComment" :language="language" :previewTheme="previewTheme" />
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" @click="showModal = false">キャンセル</v-btn>
+            <v-btn color="blue darken-1">投稿</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+      <v-divider class="mx-7 my-2"></v-divider>
+      <div class="px-4">
+        <div v-for="comment in comments" :key="comment.id">
+          <showComment :comment="comment" />
+          <div class="mb-2"></div>
+        </div>
+      </div>
+    </div>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import MarkdownIt from 'markdown-it'
-import markdownItTexmath from 'markdown-it-texmath'
-import katex from 'katex'
-import 'katex/dist/katex.min.css'
+import { MdEditor, MdPreview } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
+import showQuestion from '@/components/showQuestion.vue'
+import showComment from '@/components/showComment.vue'
+import { Problem, Comment } from '@/types/questionTypes'
 
 const title = ref('Title')
-const problemText = ref('二次方程式 $ax^2+bx+c$ ですわよ。 $$\\frac{1}{2}$$')
-const answerExplanation = ref('## sdf')
+const problem: Problem = {
+  title: '問題ex',
+  id: '1',
+  problemContent: '二次方程式 $ax^2+bx+c$ ですわよ。\n$$\\frac{1}{2}$$',
+  user: 'masky5',
+  date: 14,
+  upvoteCount: 100,
+  answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+  comentCount: 10
+}
+const comments = ref<Comment[]>([
+  {
+    id: '1',
+    user: 'masky5',
+    date: 14,
+    content: 'コメントです！\n$$\\frac{1}{2}$$',
+    upvoteCount: 100
+  },
+  {
+    id: '2',
+    user: 'masky5',
+    date: 14,
+    content: 'お前はバカだ！\n$$\\frac{1}{2}$$',
+    upvoteCount: 100
+  }
+])
+const newComment = ref('')
 const showAnswer = ref(false)
-
+const showModal = ref(false)
+const previewTheme = ref('github')
+const language = ref('en-US')
 const route = useRoute()
 const id = route.params.id || 'default ID'
 title.value = `This is a Problem ${id}.`
-
-const compiledMarkdown = (markdownText: string) => {
-  const md = new MarkdownIt()
-  md.use(markdownItTexmath, { engine: katex })
-  return md.render(markdownText)
-}
-
-onMounted(() => {
-  if (window.MathJax) {
-    window.MathJax.Hub.Config({
-      TeX: { equationNumbers: { autoNumber: 'AMS' } },
-      tex2jax: {
-        inlineMath: [
-          ['$', '$'],
-          ['\\(', '\\)']
-        ],
-        displayMath: [
-          ['$$', '$$'],
-          ['\\[', '\\]']
-        ],
-        processEscapes: true
-      },
-      'HTML-CSS': { matchFontHeight: false },
-      displayAlign: 'center',
-      displayIndent: '2em'
-    })
-    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
-  }
-})
 </script>
 
 <style scoped>

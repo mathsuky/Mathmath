@@ -14,16 +14,16 @@
                 class="mb-3"
                 v-model="problemTitle"
               ></v-text-field>
-              <v-textarea
-                label="問題文"
-                :counter="1000"
-                :rules="rules.problemText"
-                placeholder="# Markdown+LaTeXで書けます"
-                v-model="problemText"
-              ></v-textarea>
-              <v-card title="問題文のプレビュー" variant="outlined" class="mb-6"
-                ><div class="preview" v-html="compiledMarkdown(problemText)"></div
-              ></v-card>
+              <div class="mb-8">
+                <div class="markdown-body">
+                  <MdEditor
+                    v-model="problemText"
+                    :language="language"
+                    :previewTheme="previewTheme"
+                  />
+                </div>
+                <div class="error-message" v-if="problemTextError">{{ problemTextError }}</div>
+              </div>
               <v-text-field
                 :counter="200"
                 :rules="rules.description"
@@ -33,45 +33,61 @@
                 class="mb-3"
                 v-model="description"
               ></v-text-field>
-              <v-textarea
-                label="解答や解説"
-                :counter="1000"
-                :rules="rules.answerExplanation"
-                placeholder="# Markdown+LaTeXで書けます"
+              <MdEditor
                 v-model="answerExplanation"
-              ></v-textarea>
-              <v-card title="解答解説のプレビュー" variant="outlined" class="mb-6"
-                ><div class="preview" v-html="compiledMarkdown(answerExplanation)"></div
-              ></v-card>
+                :language="language"
+                :previewTheme="previewTheme"
+              />
+              <div class="error-message" v-if="answerExplanationError">
+                {{ answerExplanationError }}
+              </div>
             </template>
             <template v-slot:item.2>
               <div class="summaryItemCaption">タイトル</div>
-              <div class="summaryItemContent" v-if="problemTitle">{{ problemTitle }}</div>
-              <div class="summaryItemContent" style="color: red" v-else>
-                タイトルは入力されていません。この項目は必須です。
+              <div class="summaryItemContent">
+                <div style="color: darkred" v-if="!problemTitle">
+                  タイトルは入力されていません。この項目は必須です。
+                </div>
+                <div style="color: darkred" v-else-if="!isWithinLimit(problemTitle, 50)">
+                  タイトルは50文字以内で入力してください。
+                </div>
+                <div v-else>
+                  {{ problemTitle }}
+                </div>
               </div>
               <div class="summaryItemCaption">問題文</div>
-              <div
-                class="summaryItemContent"
-                v-if="problemText"
-                v-html="compiledMarkdown(problemText)"
-              ></div>
-              <div class="summaryItemContent" style="color: red" v-else>
-                問題文は入力されていません。この項目は必須です。
+              <div class="summaryItemContent">
+                <div style="color: darkred" v-if="!problemText">
+                  問題文は入力されていません。この項目は必須です。
+                </div>
+                <div style="color: darkred" v-else-if="!isWithinLimit(problemText, 500)">
+                  問題文は500文字以内で入力してください。
+                </div>
+                <div v-else>
+                  <MdPreview :modelValue="problemText" :previewTheme="previewTheme" />
+                </div>
               </div>
               <div class="summaryItemCaption">説明</div>
-              <div class="summaryItemContent" v-if="description">{{ description }}</div>
-              <div class="summaryItemContent" style="color: gray" v-else>
-                説明は入力されていません。
+              <div class="summaryItemContent">
+                <div style="color: darkred" v-if="!description">説明は入力されていません。</div>
+                <div style="color: darkred" v-else-if="!isWithinLimit(description, 500)">
+                  説明は500文字以内で入力してください。
+                </div>
+                <div v-else>
+                  {{ description }}
+                </div>
               </div>
               <div class="summaryItemCaption">解答解説</div>
-              <div
-                class="summaryItemContent"
-                v-if="answerExplanation"
-                v-html="compiledMarkdown(answerExplanation)"
-              ></div>
-              <div class="summaryItemContent" style="color: red" v-else>
-                解答解説は入力されていません。この項目は必須です。
+              <div class="summaryItemContent">
+                <div style="color: darkred" v-if="!answerExplanation">
+                  解答解説は入力されていません。この項目は必須です。
+                </div>
+                <div style="color: darkred" v-else-if="!isWithinLimit(answerExplanation, 500)">
+                  解答解説は500文字以内で入力してください。
+                </div>
+                <div v-else>
+                  <MdPreview :modelValue="answerExplanation" :previewTheme="previewTheme" />
+                </div>
               </div>
               <v-btn @click="showMessage" color="success">submit</v-btn>
             </template>
@@ -83,19 +99,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import MarkdownIt from 'markdown-it'
-import markdownItTexmath from 'markdown-it-texmath'
-import katex from 'katex'
-import 'katex/dist/katex.min.css'
+import { MdEditor, MdPreview } from 'md-editor-v3'
+import 'md-editor-v3/lib/style.css'
 import { isWithinLimit } from '@/workers/isWithinLimit'
 import rules from '@/workers/rules'
 
 const problemTitle = ref('')
 const description = ref('')
-const problemText = ref('')
-const answerExplanation = ref('')
+const problemText = ref('# 問題文を入力')
+const answerExplanation = ref('# 解答解説を入力')
+const language = ref('en-US')
+const previewTheme = ref('github')
 
 const isFormValid = computed(
   () =>
@@ -104,16 +120,10 @@ const isFormValid = computed(
     description.value &&
     answerExplanation.value &&
     isWithinLimit(problemTitle.value, 50) &&
-    isWithinLimit(problemText.value, 1000) &&
+    isWithinLimit(problemText.value, 10000) &&
     isWithinLimit(description.value, 200) &&
-    isWithinLimit(answerExplanation.value, 1000)
+    isWithinLimit(answerExplanation.value, 10000)
 )
-
-const compiledMarkdown = (markdownText: string) => {
-  const md = new MarkdownIt()
-  md.use(markdownItTexmath, { engine: katex })
-  return md.render(markdownText)
-}
 
 const clearForm = () => {
   problemTitle.value = ''
@@ -129,30 +139,27 @@ const showMessage = () => {
     alert('正しく送信されました。')
     clearForm()
     router.push('/')
-  } else alert('必要な項目が全て入力されていません。')
+  } else alert('入力に不備があります。')
 }
 
-onMounted(() => {
-  if (window.MathJax) {
-    window.MathJax.Hub.Config({
-      TeX: { equationNumbers: { autoNumber: 'AMS' } },
-      tex2jax: {
-        inlineMath: [
-          ['$', '$'],
-          ['\\(', '\\)']
-        ],
-        displayMath: [
-          ['$$', '$$'],
-          ['\\[', '\\]']
-        ],
-        processEscapes: true
-      },
-      'HTML-CSS': { matchFontHeight: false },
-      displayAlign: 'center',
-      displayIndent: '2em'
-    })
-    window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub])
+const problemTextError = computed(() => {
+  for (const rule of rules.problemText) {
+    const result = rule(problemText.value)
+    if (result !== true) {
+      return result
+    }
   }
+  return ''
+})
+
+const answerExplanationError = computed(() => {
+  for (const rule of rules.answerExplanation) {
+    const result = rule(answerExplanation.value)
+    if (result !== true) {
+      return result
+    }
+  }
+  return ''
 })
 </script>
 
@@ -194,6 +201,13 @@ onMounted(() => {
 .summaryItemContent {
   margin-bottom: 20px;
   margin-left: 5px;
+}
+
+.error-message {
+  color: darkred;
+  margin-top: 4px;
+  margin-left: 20px;
+  font-size: 12px;
 }
 
 /* MarkdownのCSSを上書きする */
