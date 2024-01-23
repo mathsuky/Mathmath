@@ -16,7 +16,7 @@ const navs = ref([
   {
     icon: 'mdi-home',
     title: 'CREATEProblem',
-    link: '/createproblem'
+    link: '/problem/new'
   }
 ])
 </script>

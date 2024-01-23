@@ -16,20 +16,7 @@
         <v-container>
           <v-row>
             <v-col v-for="(NewProblem, index) in Newproblems" :key="index">
-              <v-hover v-slot="{ isHovering, props }">
-                <v-card
-                  :elevation="isHovering ? 12 : 2"
-                  :class="{ 'on-hover': isHovering }"
-                  v-bind="props"
-                >
-                  <v-img
-                    src="https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg"
-                    height="225px"
-                  ></v-img>
-                  <v-card-title>{{ NewProblem.title }}</v-card-title>
-                  <v-btn :to="'/problem/' + NewProblem.id">この問題を見る</v-btn>
-                </v-card></v-hover
-              >
+              <showQuestion :problem="NewProblem" :isShowDetail="false" />
             </v-col>
           </v-row>
         </v-container>
@@ -45,20 +32,7 @@
         <v-container>
           <v-row>
             <v-col v-for="(RecommendProblem, index) in RecommendProblems" :key="index">
-              <v-hover v-slot="{ isHovering, props }">
-                <v-card
-                  :elevation="isHovering ? 12 : 2"
-                  :class="{ 'on-hover': isHovering }"
-                  v-bind="props"
-                >
-                  <v-img
-                    src="https://cdn.vuetifyjs.com/docs/images/cards/singer.jpg"
-                    height="225px"
-                  ></v-img>
-                  <v-card-title>{{ RecommendProblem.title }}</v-card-title>
-                  <v-btn :to="'/problem/' + RecommendProblem.id">この問題を見る</v-btn>
-                </v-card></v-hover
-              >
+              <showQuestion :problem="RecommendProblem" />
             </v-col>
           </v-row>
         </v-container>
@@ -69,40 +43,72 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import showQuestion from '@/components/showQuestion.vue'
+import { Problem } from '@/types/questionTypes'
 
-const Newproblems = ref([
+const Newproblems = ref<Problem[]>([
   {
     title: '問題1',
-    id: 1,
-    img: 'https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg'
+    id: '1',
+    problemContent: 'こんにちは！\n$$\\frac{1}{2}$$',
+    user: 'masky5',
+    date: 14,
+    upvoteCount: 100,
+    answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+    comentCount: 10
   },
   {
     title: '問題2',
-    id: 2,
-    img: 'mdi-numeric-1-circle-outline'
+    id: '2',
+    problemContent: 'こんにちは！\n$$\\frac{1}{2}$$',
+    user: 'masky5859',
+    date: 14,
+    upvoteCount: 0,
+    answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+    comentCount: 10
   },
   {
     title: '問題3',
-    id: 3,
-    img: 'mdi-numeric-1-circle-outline'
+    id: '3',
+    problemContent: 'こんにちは！\n$$\\frac{1}{2}$$',
+    user: 'masky5859',
+    date: 14,
+    upvoteCount: 100,
+    answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+    comentCount: 10
   }
 ])
 
 const RecommendProblems = ref([
   {
     title: '問題4',
-    id: 4,
-    img: 'https://cdn.vuetifyjs.com/docs/images/cards/hands.jpg'
+    id: '4',
+    problemContent: 'こんにちは！\n$$\\frac{1}{2}$$',
+    user: 'masky5859',
+    date: 14,
+    upvoteCount: 100,
+    answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+    comentCount: 10
   },
   {
     title: '問題5',
-    id: 5,
-    img: 'mdi-numeric-1-circle-outline'
+    id: '5',
+    problemContent: 'こんにちは！\n$$\\frac{1}{2}$$',
+    user: 'masky5859',
+    date: 14,
+    upvoteCount: 100,
+    answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+    comentCount: 10
   },
   {
     title: '問題6',
-    id: 6,
-    img: 'mdi-numeric-1-circle-outline'
+    id: '6',
+    problemContent: 'こんにちは！\n$$\\frac{1}{2}$$',
+    user: 'masky5859',
+    date: 14,
+    upvoteCount: 100,
+    answerContent: '解答解説です！\n$$\\frac{1}{2}$$',
+    comentCount: 10
   }
 ])
 </script>
