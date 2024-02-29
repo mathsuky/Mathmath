@@ -16,7 +16,7 @@
         <v-container>
           <v-row>
             <v-col v-for="(NewProblem, index) in Newproblems" :key="index">
-              <showQuestion :problem="NewProblem" :isShowDetail="false" />
+              <showProblem :problem="NewProblem" :isShowDetail="false" />
             </v-col>
           </v-row>
         </v-container>
@@ -32,7 +32,7 @@
         <v-container>
           <v-row>
             <v-col v-for="(RecommendProblem, index) in RecommendProblems" :key="index">
-              <showQuestion :problem="RecommendProblem" />
+              <showProblem :problem="RecommendProblem" />
             </v-col>
           </v-row>
         </v-container>
@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import showQuestion from '@/components/showQuestion.vue'
+import showProblem from '@/components/showProblem.vue'
 import { Problem } from '@/types/questionTypes'
 
 const Newproblems = ref<Problem[]>([

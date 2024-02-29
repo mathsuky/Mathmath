@@ -1,7 +1,7 @@
 <template>
   <v-card
     :elevation="isShowDetail ? 0 : 2"
-    :href="isShowDetail ? null : '/problem/' + problem.id"
+    :href="isShowDetail ? null : '/problems/' + problem.id"
     tag="a"
   >
     <v-card-title class="text-h5 font-weight-bold text-start mt-3 mx-3">{{

@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <showQuestion :problem="problem" :isShowDetail="true" />
+    <showProblem :problem="problem" :isShowDetail="true" />
     <v-divider class="mt-5 mb-2"></v-divider>
     <v-btn
       class="mx-7 mb-4"
@@ -55,7 +55,7 @@ import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { MdEditor, MdPreview } from 'md-editor-v3'
 import 'md-editor-v3/lib/style.css'
-import showQuestion from '@/components/showQuestion.vue'
+import showProblem from '@/components/showProblem.vue'
 import showComment from '@/components/showComment.vue'
 import { Problem, Comment } from '@/types/questionTypes'
 

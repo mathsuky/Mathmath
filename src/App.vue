@@ -10,13 +10,18 @@ const navs = ref([
   },
   {
     icon: 'mdi-home',
-    title: 'ABOUT',
-    link: '/about'
+    title: 'PROBLEMS',
+    link: '/problems'
   },
   {
     icon: 'mdi-home',
     title: 'CREATEProblem',
-    link: '/problem/new'
+    link: '/problems/new'
+  },
+  {
+    icon: 'mdi-home',
+    title: 'ABOUT',
+    link: '/about'
   }
 ])
 </script>
