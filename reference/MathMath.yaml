@@ -1,0 +1,749 @@
+openapi: 3.1.0
+x-stoplight:
+  id: 7oul61us08svr
+info:
+  title: MathMath
+  version: '1.0'
+  description: ''
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  '/users/{userId}':
+    parameters:
+      - schema:
+          type: integer
+        name: userId
+        in: path
+        required: true
+        description: Id of an existing user.
+    get:
+      summary: Get User Info by User ID
+      tags: []
+      responses:
+        '200':
+          description: User Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Get User Alice Smith:
+                  value:
+                    id: 142
+                    firstName: Alice
+                    lastName: Smith
+                    email: alice.smith@gmail.com
+                    dateOfBirth: '1997-10-31'
+                    emailVerified: true
+                    signUpDate: '2019-08-24'
+        '404':
+          description: User Not Found
+      operationId: get-users-userId
+      description: Retrieve the information of the user with the matching user ID.
+    patch:
+      summary: Update User Information
+      operationId: patch-users-userId
+      responses:
+        '200':
+          description: User Updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                Updated User Rebecca Baker:
+                  value:
+                    id: 13
+                    firstName: Rebecca
+                    lastName: Baker
+                    email: rebecca@gmail.com
+                    dateOfBirth: '1985-10-02'
+                    emailVerified: false
+                    createDate: '2019-08-24'
+        '404':
+          description: User Not Found
+        '409':
+          description: Email Already Taken
+      description: Update the information of an existing user.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                  description: 'If a new email is given, the user''s email verified property will be set to false.'
+                dateOfBirth:
+                  type: string
+            examples:
+              Update First Name:
+                value:
+                  firstName: Rebecca
+              Update Email:
+                value:
+                  email: rebecca@gmail.com
+              Update Last Name & Date of Birth:
+                value:
+                  lastName: Baker
+                  dateOfBirth: '1985-10-02'
+        description: Patch user properties to update.
+  /user:
+    post:
+      summary: Create New User
+      operationId: post-user
+      responses:
+        '200':
+          description: User Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              examples:
+                New User Bob Fellow:
+                  value:
+                    id: 12
+                    firstName: Bob
+                    lastName: Fellow
+                    email: bob.fellow@gmail.com
+                    dateOfBirth: '1996-08-24'
+                    emailVerified: false
+                    createDate: '2020-11-18'
+        '400':
+          description: Missing Required Information
+        '409':
+          description: Email Already Taken
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                dateOfBirth:
+                  type: string
+                  format: date
+              required:
+                - firstName
+                - lastName
+                - email
+                - dateOfBirth
+            examples:
+              Create User Bob Fellow:
+                value:
+                  firstName: Bob
+                  lastName: Fellow
+                  email: bob.fellow@gmail.com
+                  dateOfBirth: '1996-08-24'
+        description: Post the necessary fields for the API to create a new user.
+      description: Create a new user.
+  /questions:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - questions
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    total: 100
+                    questions:
+                      - id: question_id_string
+                        owner:
+                          id: user_id_string
+                          name: owner_name
+                        title: title
+                        content: content
+                        created_at: '2022-02-18T14:12:53.4242+09:00'
+                        tags:
+                          - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                            name: tag
+                        difficulty: 3
+                        upvote_count: 100
+                properties:
+                  total:
+                    type: integer
+                  questions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        owner:
+                          type: object
+                          required:
+                            - id
+                            - name
+                          properties:
+                            id:
+                              type: string
+                            name:
+                              type: string
+                        title:
+                          type: string
+                        content:
+                          type: string
+                        created_at:
+                          type: string
+                        tags:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              name:
+                                type: string
+                        difficulty:
+                          type: integer
+                        upvote_count:
+                          type: integer
+                      required:
+                        - id
+                        - owner
+                        - title
+                        - content
+                        - created_at
+                        - difficulty
+                required:
+                  - total
+                  - questions
+        '404':
+          description: Not Found
+      operationId: getAllQuestions
+      description: ''
+      requestBody:
+        content: {}
+      parameters:
+        - schema:
+            type: integer
+          in: query
+          name: offset
+        - schema:
+            type: string
+          in: query
+          name: sort
+    post:
+      summary: ''
+      operationId: postQuestion
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    owner_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                    title: title
+                    content: content
+                    answer_content: answerscontent
+                    tags:
+                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                    created_at: '2016-07-01T12:00:00Z'
+                    difficulty: 3
+                properties:
+                  owner_id:
+                    type: string
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  answer_content:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                  created_at:
+                    type: string
+                  difficulty:
+                    type: integer
+                  upvote_count:
+                    type: integer
+                    x-stoplight:
+                      id: v4l44hfvf7etw
+                required:
+                  - owner_id
+                  - title
+                  - content
+                  - answer_content
+                  - created_at
+                  - difficulty
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  owner_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                  title: title
+                  content: content
+                  answer_content: answerscontent
+                  tags:
+                    - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                  difficulty: 3
+              properties:
+                owner_id:
+                  type: string
+                title:
+                  type: string
+                content:
+                  type: string
+                answer_content:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                difficulty:
+                  type: integer
+              required:
+                - owner_id
+                - title
+                - content
+                - answer_content
+                - difficulty
+      tags:
+        - questions
+    parameters: []
+  '/questions/{questionId}':
+    parameters:
+      - schema:
+          type: string
+        name: questionId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
+                    owner:
+                      id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                      name: pirosiki
+                    title: title
+                    content: content
+                    created_at: '2022-02-18T14:12:53.4242+09:00'
+                    tags:
+                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                        name: tag
+                    answer_id: answersId
+                    answer_content: content
+                    difficulty: 3
+                    upvote_count: 100
+                properties:
+                  id:
+                    type: string
+                  owner:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                    required:
+                      - id
+                      - name
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                  answer_content:
+                    type: string
+                  difficulty:
+                    type: integer
+                  upvote_count:
+                    type: integer
+                required:
+                  - id
+                  - title
+                  - content
+                  - created_at
+                  - answer_content
+                  - difficulty
+            application/xml:
+              schema:
+                type: object
+                properties: {}
+      operationId: getQuestion
+      description: ''
+      tags:
+        - questions
+      requestBody:
+        content: {}
+    put:
+      summary: ''
+      operationId: changeQuestion
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
+                    owner:
+                      id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                      name: pirosiki
+                    title: title
+                    content: content
+                    created_at: '2022-02-18T14:12:53.4242+09:00'
+                    tags:
+                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                        name: tag
+                    answer_id: answersId
+                    answer_content: content
+                    difficulty: 3
+                    upvote_count: 100
+                properties:
+                  question_id:
+                    type: string
+                    x-stoplight:
+                      id: s99tmwur9zrwb
+                  owner:
+                    type: object
+                    required:
+                      - id
+                      - name
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                  title:
+                    type: string
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                  answer_content:
+                    type: string
+                  difficulty:
+                    type: integer
+                  upvote_count:
+                    type: integer
+                required:
+                  - question_id
+                  - owner
+                  - title
+                  - content
+                  - created_at
+                  - answer_content
+                  - difficulty
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  question_id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
+                  title: title
+                  content: content
+                  tags:
+                    - id: 1ab8fa39-03f7-d06f-a7be-40aae74a9560
+                  answer_content: content
+                  difficulty: 3
+              properties:
+                question_id:
+                  type: string
+                title:
+                  type: string
+                content:
+                  type: string
+                tags:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                answer_content:
+                  type: string
+                difficulty:
+                  type: integer
+              required:
+                - question_id
+                - title
+                - content
+                - answer_content
+                - difficulty
+      tags:
+        - questions
+  /tags:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    tags:
+                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                        name: tag
+                properties:
+                  tags:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        name:
+                          type: string
+                      required:
+                        - id
+                        - name
+                required:
+                  - tags
+      operationId: getAllTags
+    post:
+      summary: ''
+      operationId: postTag
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                    name: tag
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                required:
+                  - id
+                  - name
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  name: tag
+              properties:
+                name:
+                  type: string
+              required:
+                - name
+  '/questions/{questionId}/comments':
+    parameters:
+      - schema:
+          type: string
+        name: questionId
+        in: path
+        required: true
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses: {}
+      operationId: getAllComments
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  total: 3
+                  comments:
+                    - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                      owner:
+                        id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                        name: pirosiki
+                      content: I'm a comment
+                      created_at: '2016-07-01T12:00:00Z'
+              properties:
+                total:
+                  type: integer
+                comments:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      owner:
+                        type: object
+                        required:
+                          - id
+                          - name
+                        properties:
+                          id:
+                            type: string
+                          name:
+                            type: string
+                      content:
+                        type: string
+                      created_at:
+                        type: string
+                    required:
+                      - id
+                      - owner
+                      - content
+                      - created_at
+              required:
+                - total
+    post:
+      summary: ''
+      operationId: postComment
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    comment_id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                    owner:
+                      id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                      name: pirosiki
+                    content: I'm a comment
+                    created_at: '2016-07-01T12:00:00Z'
+                properties:
+                  comment_id:
+                    type: string
+                  owner:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                      name:
+                        type: string
+                    required:
+                      - id
+                      - name
+                  content:
+                    type: string
+                  created_at:
+                    type: string
+                required:
+                  - comment_id
+                  - content
+                  - created_at
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              x-examples:
+                Example 1:
+                  user_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
+                  content: I'm a comment
+              properties:
+                user_id:
+                  type: string
+                content:
+                  type: string
+              required:
+                - user_id
+                - content
+components:
+  schemas:
+    User:
+      title: User
+      type: object
+      examples:
+        - id: 142
+          firstName: Alice
+          lastName: Smith
+          email: alice.smith@gmail.com
+          dateOfBirth: '1997-10-31'
+          emailVerified: true
+          signUpDate: '2019-08-24'
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the given user.
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        dateOfBirth:
+          type: string
+          format: date
+          example: '1997-10-31'
+        emailVerified:
+          type: boolean
+          description: Set to true if the user's email has been verified.
+        createDate:
+          type: string
+          format: date
+          description: The date that the user was created.
+      required:
+        - firstName
+        - lastName
+        - email
