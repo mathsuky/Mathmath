@@ -7,16 +7,12 @@
 import { ref } from 'vue'
 import axios from 'axios'
 import { SampleApiFactory, Configuration } from '@/api/generated'
-
-const title = ref('Title')
-const question = ref('Question')
-const answer = ref('Answer')
-const showAnswer = ref(false)
+import HelloWorld from './components/HelloWorld.vue'
 
 const text = ref('')
 
 const sampleApi = SampleApiFactory(
-  new Configuration({ basePath: 'http://localhost:4010' }),
+  new Configuration({ basePath: import.meta.env.VITE_API_BASE_URL }),
   undefined,
   axios.create()
 )

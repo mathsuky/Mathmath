@@ -1,13 +1,28 @@
-openapi: 3.1.0
+openapi: 3.0.3
 x-stoplight:
   id: 7oul61us08svr
 info:
   title: MathMath
   version: '1.0'
   description: ''
+# servers:
+#   - url: 'http://localhost:3000'
 servers:
-  - url: 'http://localhost:3000'
+  - url: localhost:8080
+    description: local server
+  - url: localhost:4010
+    description: mock server
 paths:
+  /sample:
+    get:
+      summary: get-sample
+      description: サンプルエンドポイント
+      operationId: get-sample
+      tags:
+        - sample
+      responses:
+        '200':
+          $ref: '#/components/responses/sample200Response'
   '/users/{userId}':
     parameters:
       - schema:
@@ -77,7 +92,7 @@ paths:
                   type: string
                 email:
                   type: string
-                  description: 'If a new email is given, the user''s email verified property will be set to false.'
+                  description: "If a new email is given, the user's email verified property will be set to false."
                 dateOfBirth:
                   type: string
             examples:
@@ -227,8 +242,6 @@ paths:
           description: Not Found
       operationId: getAllQuestions
       description: ''
-      requestBody:
-        content: {}
       parameters:
         - schema:
             type: integer
@@ -415,8 +428,6 @@ paths:
       description: ''
       tags:
         - questions
-      requestBody:
-        content: {}
     put:
       summary: ''
       operationId: changeQuestion
@@ -710,17 +721,24 @@ paths:
                 - content
 components:
   schemas:
+    Sample:
+      type: object
+      properties:
+        text:
+          type: string
+      required:
+        - text
     User:
       title: User
       type: object
-      examples:
-        - id: 142
-          firstName: Alice
-          lastName: Smith
-          email: alice.smith@gmail.com
-          dateOfBirth: '1997-10-31'
-          emailVerified: true
-          signUpDate: '2019-08-24'
+      # examples:
+      #   - id: 142
+      #     firstName: Alice
+      #     lastName: Smith
+      #     email: alice.smith@gmail.com
+      #     dateOfBirth: '1997-10-31'
+      #     emailVerified: true
+      #     signUpDate: '2019-08-24'
       properties:
         id:
           type: integer
@@ -747,3 +765,17 @@ components:
         - firstName
         - lastName
         - email
+  responses:
+    sample200Response:
+      description: OK
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Sample'
+          examples:
+            example-1:
+              $ref: '#/components/examples/sampleExample'
+  examples:
+    sampleExample:
+      value:
+        text: sample
