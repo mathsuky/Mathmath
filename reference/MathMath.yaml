@@ -8,144 +8,6 @@ info:
 servers:
   - url: 'http://localhost:3000'
 paths:
-  '/users/{userId}':
-    parameters:
-      - schema:
-          type: integer
-        name: userId
-        in: path
-        required: true
-        description: Id of an existing user.
-    get:
-      summary: Get User Info by User ID
-      tags: []
-      responses:
-        '200':
-          description: User Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Get User Alice Smith:
-                  value:
-                    id: 142
-                    firstName: Alice
-                    lastName: Smith
-                    email: alice.smith@gmail.com
-                    dateOfBirth: '1997-10-31'
-                    emailVerified: true
-                    signUpDate: '2019-08-24'
-        '404':
-          description: User Not Found
-      operationId: get-users-userId
-      description: Retrieve the information of the user with the matching user ID.
-    patch:
-      summary: Update User Information
-      operationId: patch-users-userId
-      responses:
-        '200':
-          description: User Updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                Updated User Rebecca Baker:
-                  value:
-                    id: 13
-                    firstName: Rebecca
-                    lastName: Baker
-                    email: rebecca@gmail.com
-                    dateOfBirth: '1985-10-02'
-                    emailVerified: false
-                    createDate: '2019-08-24'
-        '404':
-          description: User Not Found
-        '409':
-          description: Email Already Taken
-      description: Update the information of an existing user.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                  description: 'If a new email is given, the user''s email verified property will be set to false.'
-                dateOfBirth:
-                  type: string
-            examples:
-              Update First Name:
-                value:
-                  firstName: Rebecca
-              Update Email:
-                value:
-                  email: rebecca@gmail.com
-              Update Last Name & Date of Birth:
-                value:
-                  lastName: Baker
-                  dateOfBirth: '1985-10-02'
-        description: Patch user properties to update.
-  /user:
-    post:
-      summary: Create New User
-      operationId: post-user
-      responses:
-        '200':
-          description: User Created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-              examples:
-                New User Bob Fellow:
-                  value:
-                    id: 12
-                    firstName: Bob
-                    lastName: Fellow
-                    email: bob.fellow@gmail.com
-                    dateOfBirth: '1996-08-24'
-                    emailVerified: false
-                    createDate: '2020-11-18'
-        '400':
-          description: Missing Required Information
-        '409':
-          description: Email Already Taken
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                firstName:
-                  type: string
-                lastName:
-                  type: string
-                email:
-                  type: string
-                dateOfBirth:
-                  type: string
-                  format: date
-              required:
-                - firstName
-                - lastName
-                - email
-                - dateOfBirth
-            examples:
-              Create User Bob Fellow:
-                value:
-                  firstName: Bob
-                  lastName: Fellow
-                  email: bob.fellow@gmail.com
-                  dateOfBirth: '1996-08-24'
-        description: Post the necessary fields for the API to create a new user.
-      description: Create a new user.
   /questions:
     get:
       summary: Your GET endpoint
@@ -530,7 +392,8 @@ paths:
   /tags:
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - tags
       responses:
         '200':
           description: OK
@@ -603,7 +466,8 @@ paths:
         required: true
     get:
       summary: Your GET endpoint
-      tags: []
+      tags:
+        - comments
       responses: {}
       operationId: getAllComments
       requestBody:
@@ -708,6 +572,18 @@ paths:
               required:
                 - user_id
                 - content
+  /test:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Owner'
+      operationId: get-test
 components:
   schemas:
     User:
@@ -747,3 +623,84 @@ components:
         - firstName
         - lastName
         - email
+      x-tags:
+        - User
+    Owner:
+      title: Owner
+      x-stoplight:
+        id: 0ge5hoz86w13m
+      type: object
+      x-tags:
+        - Owner
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: icqcgqnvacpqs
+      required:
+        - id
+        - name
+    Tag:
+      title: Tag
+      x-stoplight:
+        id: 8cr0xtjokggmz
+      type: object
+      x-tags:
+        - Tag
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          x-stoplight:
+            id: qsiiku8n8a0nm
+      required:
+        - id
+        - name
+    Question:
+      title: Question
+      x-stoplight:
+        id: hvpx823utxm8l
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/Owner'
+          x-stoplight:
+            id: 703oofih1m7b5
+        title:
+          type: string
+          x-stoplight:
+            id: fhdxz2jykh2pl
+        content:
+          type: string
+          x-stoplight:
+            id: btllo6w5gvkxf
+        created_at:
+          type: string
+          x-stoplight:
+            id: ef6xw4o8n9cw9
+        tags:
+          $ref: '#/components/schemas/Owner'
+          x-stoplight:
+            id: a48eui9xj1nmt
+    Tags:
+      title: Tags
+      x-stoplight:
+        id: 21sruu3zwadp6
+      type: object
+      properties:
+        id:
+          type: array
+          items: {}
+  responses:
+    test:
+      description: Example response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties: {}
