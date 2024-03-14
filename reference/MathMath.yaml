@@ -572,7 +572,7 @@ paths:
               required:
                 - user_id
                 - content
-  /test:
+  /testq:
     get:
       summary: Your GET endpoint
       tags: []
@@ -582,8 +582,62 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Owner'
-      operationId: get-test
+                type: object
+                x-examples:
+                  Example 1:
+                    total: 100
+                    questions:
+                      - id: question_id_string
+                        owner:
+                          id: user_id_string
+                          name: owner_name
+                        title: title
+                        content: content
+                        created_at: '2022-02-18T14:12:53.4242+09:00'
+                        tags:
+                          - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
+                            name: tag
+                        difficulty: 3
+                        upvote_count: 100
+                properties:
+                  total:
+                    type: number
+                    x-stoplight:
+                      id: u42qysb9nx7aa
+                    minimum: 0
+                  questions:
+                    type: array
+                    x-stoplight:
+                      id: cgjmt7wrveqwc
+                    items:
+                      x-stoplight:
+                        id: y8hjmmzhohkoo
+                      type: object
+                      properties:
+                        '':
+                          type: string
+                          x-stoplight:
+                            id: p55bp8mc1e1hw
+        '':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tota;:
+                    type: number
+                    x-stoplight:
+                      id: vriy0pckd56j3
+                    minimum: 0
+                  questions:
+                    type: array
+                    x-stoplight:
+                      id: khre28yfqkirg
+                    items:
+                      $ref: '#/components/schemas/Question'
+                      x-stoplight:
+                        id: 6cj4eqbq556eo
+      operationId: get-testq
 components:
   schemas:
     User:
