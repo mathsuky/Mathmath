@@ -301,7 +301,6 @@ paths:
         required: true
     get:
       summary: Your GET endpoint
-      tags: []
       responses:
         '200':
           description: OK
@@ -320,10 +319,11 @@ paths:
       operationId: get-users-userId
       requestBody:
         content: {}
+      tags:
+        - users
   /users/me:
     get:
       summary: Your GET endpoint
-      tags: []
       responses:
         '200':
           description: OK
@@ -342,6 +342,26 @@ paths:
       operationId: get-users-me
       requestBody:
         content: {}
+      tags:
+        - users
+  /sample:
+    get:
+      summary: Your GET endpoint
+      tags:
+        - sample
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  '':
+                    type: string
+                    x-stoplight:
+                      id: mj493idyqv1sd
+      operationId: get-sample
 components:
   schemas:
     User:
@@ -349,8 +369,6 @@ components:
       x-stoplight:
         id: 0ge5hoz86w13m
       type: object
-      x-tags:
-        - Owner
       properties:
         id:
           type: string
@@ -361,6 +379,8 @@ components:
       required:
         - id
         - name
+      x-tags:
+        - User
     Tag:
       title: Tag
       x-stoplight:
@@ -434,6 +454,8 @@ components:
         - created_at
         - difficulty
         - upvote_count
+      x-tags:
+        - Question
     QuestionInput:
       title: QuestionInput
       x-stoplight:
