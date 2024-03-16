@@ -10,7 +10,7 @@ servers:
 paths:
   /questions:
     get:
-      summary: Your GET endpoint
+      summary: questionsGET
       tags:
         - questions
       responses:
@@ -73,7 +73,7 @@ paths:
           in: query
           name: sort
     post:
-      summary: ''
+      summary: questionsPOST
       operationId: postQuestion
       responses:
         '201':
@@ -106,7 +106,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: questionsIdGET
       responses:
         '200':
           description: OK
@@ -129,7 +129,7 @@ paths:
       requestBody:
         content: {}
     put:
-      summary: ''
+      summary: questionsIdPUT
       operationId: changeQuestion
       responses:
         '201':
@@ -180,7 +180,7 @@ paths:
         - questions
   /tags:
     get:
-      summary: Your GET endpoint
+      summary: tagsGET
       tags:
         - tags
       responses:
@@ -204,7 +204,7 @@ paths:
           description: Not Found
       operationId: getAllTags
     post:
-      summary: ''
+      summary: tagsPOST
       operationId: postTag
       responses:
         '201':
@@ -222,6 +222,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TagInput'
+      tags:
+        - tags
   '/questions/{id}/comments':
     parameters:
       - schema:
@@ -230,7 +232,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: commentsGET
       tags:
         - comments
       responses:
@@ -266,7 +268,7 @@ paths:
       requestBody:
         content: {}
     post:
-      summary: ''
+      summary: commentsPOST
       operationId: postComment
       responses:
         '201':
@@ -292,6 +294,8 @@ paths:
                 Example 1:
                   user_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
                   content: I'm a comment
+      tags:
+        - comments
   '/users/{id}':
     parameters:
       - schema:
@@ -300,7 +304,7 @@ paths:
         in: path
         required: true
     get:
-      summary: Your GET endpoint
+      summary: usersIdGET
       responses:
         '200':
           description: OK
@@ -323,7 +327,7 @@ paths:
         - users
   /users/me:
     get:
-      summary: Your GET endpoint
+      summary: usersMeGET
       responses:
         '200':
           description: OK
@@ -346,7 +350,7 @@ paths:
         - users
   /sample:
     get:
-      summary: Your GET endpoint
+      summary: sampleGET
       tags:
         - sample
       responses:
