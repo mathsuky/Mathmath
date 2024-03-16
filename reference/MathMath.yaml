@@ -39,52 +39,24 @@ paths:
                 properties:
                   total:
                     type: integer
+                    minimum: 0
                   questions:
                     type: array
+                    x-stoplight:
+                      id: 753mlmz4jnr2n
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        owner:
-                          type: object
-                          required:
-                            - id
-                            - name
-                          properties:
-                            id:
-                              type: string
-                            name:
-                              type: string
-                        title:
-                          type: string
-                        content:
-                          type: string
-                        created_at:
-                          type: string
-                        tags:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              name:
-                                type: string
-                        difficulty:
-                          type: integer
-                        upvote_count:
-                          type: integer
-                      required:
-                        - id
-                        - owner
-                        - title
-                        - content
-                        - created_at
-                        - difficulty
+                      $ref: '#/components/schemas/Question'
+                      x-stoplight:
+                        id: pwaju4ogqle42
                 required:
                   - total
                   - questions
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
         '404':
           description: Not Found
       operationId: getAllQuestions
@@ -109,98 +81,28 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                x-examples:
-                  Example 1:
-                    owner_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
-                    title: title
-                    content: content
-                    answer_content: answerscontent
-                    tags:
-                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                    created_at: '2016-07-01T12:00:00Z'
-                    difficulty: 3
-                properties:
-                  owner_id:
-                    type: string
-                  title:
-                    type: string
-                  content:
-                    type: string
-                  answer_content:
-                    type: string
-                  tags:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                  created_at:
-                    type: string
-                  difficulty:
-                    type: integer
-                  upvote_count:
-                    type: integer
-                    x-stoplight:
-                      id: v4l44hfvf7etw
-                required:
-                  - owner_id
-                  - title
-                  - content
-                  - answer_content
-                  - created_at
-                  - difficulty
-            application/xml:
-              schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/Question'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              x-examples:
-                Example 1:
-                  owner_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
-                  title: title
-                  content: content
-                  answer_content: answerscontent
-                  tags:
-                    - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                  difficulty: 3
-              properties:
-                owner_id:
-                  type: string
-                title:
-                  type: string
-                content:
-                  type: string
-                answer_content:
-                  type: string
-                tags:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                difficulty:
-                  type: integer
-              required:
-                - owner_id
-                - title
-                - content
-                - answer_content
-                - difficulty
+              $ref: '#/components/schemas/QuestionInput'
       tags:
         - questions
     parameters: []
-  '/questions/{questionId}':
+  '/questions/{id}':
     parameters:
       - schema:
           type: string
-        name: questionId
+        name: id
         in: path
         required: true
     get:
@@ -211,68 +113,15 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                x-examples:
-                  Example 1:
-                    id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
-                    owner:
-                      id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
-                      name: pirosiki
-                    title: title
-                    content: content
-                    created_at: '2022-02-18T14:12:53.4242+09:00'
-                    tags:
-                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                        name: tag
-                    answer_id: answersId
-                    answer_content: content
-                    difficulty: 3
-                    upvote_count: 100
-                properties:
-                  id:
-                    type: string
-                  owner:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                    required:
-                      - id
-                      - name
-                  title:
-                    type: string
-                  content:
-                    type: string
-                  created_at:
-                    type: string
-                  tags:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                  answer_content:
-                    type: string
-                  difficulty:
-                    type: integer
-                  upvote_count:
-                    type: integer
-                required:
-                  - id
-                  - title
-                  - content
-                  - created_at
-                  - answer_content
-                  - difficulty
-            application/xml:
-              schema:
-                type: object
-                properties: {}
+                $ref: '#/components/schemas/Question'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       operationId: getQuestion
       description: ''
       tags:
@@ -288,7 +137,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Question'
                 x-examples:
                   Example 1:
                     id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
@@ -305,55 +154,19 @@ paths:
                     answer_content: content
                     difficulty: 3
                     upvote_count: 100
-                properties:
-                  question_id:
-                    type: string
-                    x-stoplight:
-                      id: s99tmwur9zrwb
-                  owner:
-                    type: object
-                    required:
-                      - id
-                      - name
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                  title:
-                    type: string
-                  content:
-                    type: string
-                  created_at:
-                    type: string
-                  tags:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                  answer_content:
-                    type: string
-                  difficulty:
-                    type: integer
-                  upvote_count:
-                    type: integer
-                required:
-                  - question_id
-                  - owner
-                  - title
-                  - content
-                  - created_at
-                  - answer_content
-                  - difficulty
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       requestBody:
         content:
           application/json:
             schema:
-              type: object
+              $ref: '#/components/schemas/QuestionInput'
               x-examples:
                 Example 1:
                   question_id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
@@ -363,30 +176,6 @@ paths:
                     - id: 1ab8fa39-03f7-d06f-a7be-40aae74a9560
                   answer_content: content
                   difficulty: 3
-              properties:
-                question_id:
-                  type: string
-                title:
-                  type: string
-                content:
-                  type: string
-                tags:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                answer_content:
-                  type: string
-                difficulty:
-                  type: integer
-              required:
-                - question_id
-                - title
-                - content
-                - answer_content
-                - difficulty
       tags:
         - questions
   /tags:
@@ -400,27 +189,19 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                x-examples:
-                  Example 1:
-                    tags:
-                      - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                        name: tag
-                properties:
-                  tags:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        name:
-                          type: string
-                      required:
-                        - id
-                        - name
-                required:
-                  - tags
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+                  x-stoplight:
+                    id: 8kp69p5nbf6m6
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       operationId: getAllTags
     post:
       summary: ''
@@ -431,91 +212,59 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Tag'
                 x-examples:
                   Example 1:
                     id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
                     name: tag
-                properties:
-                  id:
-                    type: string
-                  name:
-                    type: string
-                required:
-                  - id
-                  - name
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              x-examples:
-                Example 1:
-                  name: tag
-              properties:
-                name:
-                  type: string
-              required:
-                - name
-  '/questions/{questionId}/comments':
+              $ref: '#/components/schemas/TagInput'
+  '/questions/{id}/comments':
     parameters:
       - schema:
           type: string
-        name: questionId
+        name: id
         in: path
         required: true
     get:
       summary: Your GET endpoint
       tags:
         - comments
-      responses: {}
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    x-stoplight:
+                      id: 66xihk6xu6kru
+                  comments:
+                    type: array
+                    x-stoplight:
+                      id: sll4gbn4n5uhq
+                    items:
+                      $ref: '#/components/schemas/Comment'
+                      x-stoplight:
+                        id: epfcg27ogjfz6
+          headers: {}
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       operationId: getAllComments
       requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              x-examples:
-                Example 1:
-                  total: 3
-                  comments:
-                    - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                      owner:
-                        id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
-                        name: pirosiki
-                      content: I'm a comment
-                      created_at: '2016-07-01T12:00:00Z'
-              properties:
-                total:
-                  type: integer
-                comments:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      owner:
-                        type: object
-                        required:
-                          - id
-                          - name
-                        properties:
-                          id:
-                            type: string
-                          name:
-                            type: string
-                      content:
-                        type: string
-                      created_at:
-                        type: string
-                    required:
-                      - id
-                      - owner
-                      - content
-                      - created_at
-              required:
-                - total
+        content: {}
     post:
       summary: ''
       operationId: postComment
@@ -525,54 +274,31 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                x-examples:
-                  Example 1:
-                    comment_id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                    owner:
-                      id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
-                      name: pirosiki
-                    content: I'm a comment
-                    created_at: '2016-07-01T12:00:00Z'
-                properties:
-                  comment_id:
-                    type: string
-                  owner:
-                    type: object
-                    properties:
-                      id:
-                        type: string
-                      name:
-                        type: string
-                    required:
-                      - id
-                      - name
-                  content:
-                    type: string
-                  created_at:
-                    type: string
-                required:
-                  - comment_id
-                  - content
-                  - created_at
+                $ref: '#/components/schemas/Comment'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       requestBody:
         content:
           application/json:
             schema:
-              type: object
+              $ref: '#/components/schemas/CommentInput'
               x-examples:
                 Example 1:
                   user_id: f4b5a76e-d425-1c42-ecc9-6530ce81bd4c
                   content: I'm a comment
-              properties:
-                user_id:
-                  type: string
-                content:
-                  type: string
-              required:
-                - user_id
-                - content
-  /testq:
+  '/users/{id}':
+    parameters:
+      - schema:
+          type: string
+        name: id
+        in: path
+        required: true
     get:
       summary: Your GET endpoint
       tags: []
@@ -582,104 +308,43 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                x-examples:
-                  Example 1:
-                    total: 100
-                    questions:
-                      - id: question_id_string
-                        owner:
-                          id: user_id_string
-                          name: owner_name
-                        title: title
-                        content: content
-                        created_at: '2022-02-18T14:12:53.4242+09:00'
-                        tags:
-                          - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                            name: tag
-                        difficulty: 3
-                        upvote_count: 100
-                properties:
-                  total:
-                    type: number
-                    x-stoplight:
-                      id: u42qysb9nx7aa
-                    minimum: 0
-                  questions:
-                    type: array
-                    x-stoplight:
-                      id: cgjmt7wrveqwc
-                    items:
-                      x-stoplight:
-                        id: y8hjmmzhohkoo
-                      type: object
-                      properties:
-                        '':
-                          type: string
-                          x-stoplight:
-                            id: p55bp8mc1e1hw
-        '':
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: get-users-userId
+      requestBody:
+        content: {}
+  /users/me:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  tota;:
-                    type: number
-                    x-stoplight:
-                      id: vriy0pckd56j3
-                    minimum: 0
-                  questions:
-                    type: array
-                    x-stoplight:
-                      id: khre28yfqkirg
-                    items:
-                      $ref: '#/components/schemas/Question'
-                      x-stoplight:
-                        id: 6cj4eqbq556eo
-      operationId: get-testq
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+      operationId: get-users-me
+      requestBody:
+        content: {}
 components:
   schemas:
     User:
-      title: User
-      type: object
-      examples:
-        - id: 142
-          firstName: Alice
-          lastName: Smith
-          email: alice.smith@gmail.com
-          dateOfBirth: '1997-10-31'
-          emailVerified: true
-          signUpDate: '2019-08-24'
-      properties:
-        id:
-          type: integer
-          description: Unique identifier for the given user.
-        firstName:
-          type: string
-        lastName:
-          type: string
-        email:
-          type: string
-          format: email
-        dateOfBirth:
-          type: string
-          format: date
-          example: '1997-10-31'
-        emailVerified:
-          type: boolean
-          description: Set to true if the user's email has been verified.
-        createDate:
-          type: string
-          format: date
-          description: The date that the user was created.
-      required:
-        - firstName
-        - lastName
-        - email
-      x-tags:
-        - User
-    Owner:
       title: Owner
       x-stoplight:
         id: 0ge5hoz86w13m
@@ -722,7 +387,7 @@ components:
         id:
           type: string
         owner:
-          $ref: '#/components/schemas/Owner'
+          $ref: '#/components/schemas/User'
           x-stoplight:
             id: 703oofih1m7b5
         title:
@@ -733,28 +398,143 @@ components:
           type: string
           x-stoplight:
             id: btllo6w5gvkxf
+        answer_content:
+          type: string
+          x-stoplight:
+            id: aw8pp5r74ckfv
         created_at:
           type: string
           x-stoplight:
             id: ef6xw4o8n9cw9
         tags:
-          $ref: '#/components/schemas/Owner'
           x-stoplight:
             id: a48eui9xj1nmt
-    Tags:
-      title: Tags
+          type: array
+          items:
+            $ref: '#/components/schemas/TagInput'
+            x-stoplight:
+              id: t0ykxdqcwq8kh
+        difficulty:
+          type: integer
+          x-stoplight:
+            id: 3nzc7h6g083n7
+          minimum: 1
+          maximum: 5
+        upvote_count:
+          type: integer
+          x-stoplight:
+            id: mue44zs2a6hfy
+          minimum: 0
+      required:
+        - id
+        - owner
+        - title
+        - content
+        - answer_content
+        - created_at
+        - difficulty
+        - upvote_count
+    QuestionInput:
+      title: QuestionInput
       x-stoplight:
-        id: 21sruu3zwadp6
+        id: l09pestmrw4kf
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/UserInput'
+          x-stoplight:
+            id: edrwwm3v3is5g
+        title:
+          type: string
+          x-stoplight:
+            id: mfqg9una84oo2
+        content:
+          type: string
+          x-stoplight:
+            id: s33x45iy1ye4r
+        answer_content:
+          type: string
+          x-stoplight:
+            id: nmolck1ipniuj
+        tags:
+          type: array
+          x-stoplight:
+            id: e4f8jgv4rs8yy
+          items:
+            $ref: '#/components/schemas/TagInput'
+            x-stoplight:
+              id: u9cfw0cejd530
+        difficulty:
+          type: integer
+          x-stoplight:
+            id: 3cctg9vztlz9h
+          maximum: 5
+          minimum: 1
+      required:
+        - owner
+        - title
+        - content
+        - answer_content
+        - difficulty
+    TagInput:
+      title: TagInput
+      x-stoplight:
+        id: rqx1kulfbvoq4
       type: object
       properties:
         id:
-          type: array
-          items: {}
+          type: string
+    Comment:
+      title: Comment
+      x-stoplight:
+        id: vaf0kzvieg7v9
+      type: object
+      properties:
+        id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/User'
+          x-stoplight:
+            id: 4h7c580ypjtp7
+        content:
+          type: string
+          x-stoplight:
+            id: 6s6hzhkt2gkzx
+        created_at:
+          type: string
+          x-stoplight:
+            id: nid3k3h71ovw0
+      required:
+        - id
+        - owner
+        - content
+        - created_at
+    UserInput:
+      title: UseInput
+      x-stoplight:
+        id: eichb7d6yrm1x
+      type: object
+      properties:
+        id:
+          type: string
+    CommentInput:
+      title: CommentInput
+      x-stoplight:
+        id: pqgc9wj7ttnu2
+      type: object
+      properties:
+        owner:
+          $ref: '#/components/schemas/UserInput'
+          x-stoplight:
+            id: 4dwajq75uq318
+        content:
+          type: string
+          x-stoplight:
+            id: v3at37b8ka2ge
+      required:
+        - owner
+        - content
   responses:
     test:
       description: Example response
-      content:
-        application/json:
-          schema:
-            type: object
-            properties: {}
+      content: {}
