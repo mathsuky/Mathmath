@@ -509,6 +509,48 @@ components:
         - content
       x-tags:
         - Comment
+    Questions:
+      title: Questions
+      x-stoplight:
+        id: w38d7szy7m0vl
+      type: object
+      properties:
+        total:
+          type: integer
+          x-stoplight:
+            id: 0jdipsinjty9z
+        questions:
+          type: array
+          x-stoplight:
+            id: kugnp47mz8bdp
+          items:
+            $ref: '#/components/schemas/Question'
+            x-stoplight:
+              id: 4on62932t25af
+      description: Questions
+      x-tags:
+        - Question
+    Comments:
+      title: Comments
+      x-stoplight:
+        id: 7ho4we0q8fd1k
+      type: object
+      description: Comments
+      properties:
+        total:
+          type: integer
+          x-stoplight:
+            id: 21d1otxu4f54i
+        comments:
+          type: array
+          x-stoplight:
+            id: 98hihcrqxjhcy
+          items:
+            $ref: '#/components/schemas/Comment'
+            x-stoplight:
+              id: wnzpzb8fue0t5
+      x-tags:
+        - Comment
   responses:
     Questions:
       description: QuestionsResponse
