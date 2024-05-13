@@ -17,42 +17,7 @@ paths:
         - questions
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                x-examples:
-                  Example 1:
-                    total: 100
-                    questions:
-                      - id: question_id_string
-                        owner:
-                          id: user_id_string
-                          name: owner_name
-                        title: title
-                        content: content
-                        created_at: '2022-02-18T14:12:53.4242+09:00'
-                        tags:
-                          - id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
-                            name: tag
-                        difficulty: 3
-                        upvote_count: 100
-                properties:
-                  total:
-                    type: integer
-                    minimum: 0
-                  questions:
-                    type: array
-                    x-stoplight:
-                      id: 753mlmz4jnr2n
-                    items:
-                      $ref: '#/components/schemas/Question'
-                      x-stoplight:
-                        id: pwaju4ogqle42
-                required:
-                  - total
-                  - questions
+          $ref: '#/components/responses/Questions'
         '400':
           description: Bad Request
         '401':
@@ -243,25 +208,7 @@ paths:
         - comments
       responses:
         '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  total:
-                    type: integer
-                    x-stoplight:
-                      id: 66xihk6xu6kru
-                  comments:
-                    type: array
-                    x-stoplight:
-                      id: sll4gbn4n5uhq
-                    items:
-                      $ref: '#/components/schemas/Comment'
-                      x-stoplight:
-                        id: epfcg27ogjfz6
-          headers: {}
+          $ref: '#/components/responses/Comments'
         '400':
           description: Bad Request
         '401':
@@ -358,25 +305,6 @@ paths:
       tags:
         - users
       description: getMe
-  /sample:
-    get:
-      summary: sampleGET
-      tags:
-        - sample
-      responses:
-        '200':
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  '':
-                    type: string
-                    x-stoplight:
-                      id: mj493idyqv1sd
-      operationId: getSample
-      description: getSample
 components:
   schemas:
     User:
@@ -581,4 +509,60 @@ components:
         - content
       x-tags:
         - Comment
-  responses: {}
+  responses:
+    Questions:
+      description: QuestionsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total:
+                type: integer
+                x-stoplight:
+                  id: wnthapmxurhej
+              questions:
+                type: array
+                x-stoplight:
+                  id: rvfokc9txv023
+                items:
+                  $ref: '#/components/schemas/Question'
+                  x-stoplight:
+                    id: t46i2lvxoxpqn
+            required:
+              - total
+              - questions
+        application/xml:
+          schema:
+            type: object
+            properties: {}
+        multipart/form-data:
+          schema:
+            type: object
+            properties: {}
+        text/html:
+          schema:
+            type: object
+            properties: {}
+    Comments:
+      description: CommentsResponse
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              total:
+                type: integer
+                x-stoplight:
+                  id: cn8ca9q1ivy5q
+              comments:
+                type: array
+                x-stoplight:
+                  id: g19quhzhy25xc
+                items:
+                  $ref: '#/components/schemas/Comment'
+                  x-stoplight:
+                    id: lltnnbibbay4n
+            required:
+              - total
+              - comments
