@@ -130,7 +130,7 @@ paths:
         content: {}
     put:
       summary: questionsIdPUT
-      operationId: changeQuestion
+      operationId: putQuestion
       responses:
         '201':
           description: Created
@@ -217,6 +217,14 @@ paths:
                   Example 1:
                     id: f246afb5-eaa3-2487-2f9d-f2f90064f59f
                     name: tag
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
       requestBody:
         content:
           application/json:
