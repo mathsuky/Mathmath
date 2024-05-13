@@ -557,54 +557,10 @@ components:
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              total:
-                type: integer
-                x-stoplight:
-                  id: wnthapmxurhej
-              questions:
-                type: array
-                x-stoplight:
-                  id: rvfokc9txv023
-                items:
-                  $ref: '#/components/schemas/Question'
-                  x-stoplight:
-                    id: t46i2lvxoxpqn
-            required:
-              - total
-              - questions
-        application/xml:
-          schema:
-            type: object
-            properties: {}
-        multipart/form-data:
-          schema:
-            type: object
-            properties: {}
-        text/html:
-          schema:
-            type: object
-            properties: {}
+            $ref: '#/components/schemas/Questions'
     Comments:
       description: CommentsResponse
       content:
         application/json:
           schema:
-            type: object
-            properties:
-              total:
-                type: integer
-                x-stoplight:
-                  id: cn8ca9q1ivy5q
-              comments:
-                type: array
-                x-stoplight:
-                  id: g19quhzhy25xc
-                items:
-                  $ref: '#/components/schemas/Comment'
-                  x-stoplight:
-                    id: lltnnbibbay4n
-            required:
-              - total
-              - comments
+            $ref: '#/components/schemas/Comments'
