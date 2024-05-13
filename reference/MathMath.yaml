@@ -4,7 +4,9 @@ x-stoplight:
 info:
   title: MathMath
   version: '1.0'
-  description: ''
+  description: yaml file for MathMath
+  contact:
+    name: masky
 servers:
   - url: 'http://localhost:3000'
 paths:
@@ -60,7 +62,7 @@ paths:
         '404':
           description: Not Found
       operationId: getAllQuestions
-      description: ''
+      description: getQuestions
       requestBody:
         content: {}
       parameters:
@@ -97,6 +99,7 @@ paths:
               $ref: '#/components/schemas/QuestionInput'
       tags:
         - questions
+      description: postQuestions
     parameters: []
   '/questions/{id}':
     parameters:
@@ -123,14 +126,14 @@ paths:
         '404':
           description: Not Found
       operationId: getQuestion
-      description: ''
+      description: getEachQuestion
       tags:
         - questions
       requestBody:
         content: {}
     put:
       summary: questionsIdPUT
-      operationId: changeQuestion
+      operationId: putQuestion
       responses:
         '201':
           description: Created
@@ -178,6 +181,7 @@ paths:
                   difficulty: 3
       tags:
         - questions
+      description: putQuestion
   /tags:
     get:
       summary: tagsGET
@@ -203,6 +207,7 @@ paths:
         '404':
           description: Not Found
       operationId: getAllTags
+      description: getAllTags
     post:
       summary: tagsPOST
       operationId: postTag
@@ -224,6 +229,7 @@ paths:
               $ref: '#/components/schemas/TagInput'
       tags:
         - tags
+      description: postNewTag
   '/questions/{id}/comments':
     parameters:
       - schema:
@@ -267,6 +273,7 @@ paths:
       operationId: getAllComments
       requestBody:
         content: {}
+      description: getComments
     post:
       summary: commentsPOST
       operationId: postComment
@@ -296,6 +303,7 @@ paths:
                   content: I'm a comment
       tags:
         - comments
+      description: postComment
   '/users/{id}':
     parameters:
       - schema:
@@ -325,9 +333,10 @@ paths:
         content: {}
       tags:
         - users
+      description: getEachUser
   /users/me:
     get:
-      summary: usersMeGET
+      summary: meGET
       responses:
         '200':
           description: OK
@@ -343,11 +352,12 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
-      operationId: get-users-me
+      operationId: getMe
       requestBody:
         content: {}
       tags:
         - users
+      description: getMe
   /sample:
     get:
       summary: sampleGET
@@ -365,7 +375,8 @@ paths:
                     type: string
                     x-stoplight:
                       id: mj493idyqv1sd
-      operationId: get-sample
+      operationId: getSample
+      description: getSample
 components:
   schemas:
     User:
@@ -570,7 +581,4 @@ components:
         - content
       x-tags:
         - Comment
-  responses:
-    test:
-      description: Example response
-      content: {}
+  responses: {}
