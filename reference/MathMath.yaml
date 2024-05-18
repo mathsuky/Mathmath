@@ -18,6 +18,8 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/Questions'
+        '201':
+          description: Created
         '400':
           description: Bad Request
         '401':
@@ -26,6 +28,8 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '500':
+          description: Internal Server Error
       operationId: getAllQuestions
       description: getQuestions
       requestBody:
@@ -48,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Question'
+                $ref: '#/components/schemas/QuestionResponse'
         '400':
           description: Bad Request
         '401':
@@ -81,7 +85,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Question'
+                $ref: '#/components/schemas/QuestionResponse'
         '400':
           description: Bad Request
         '401':
@@ -90,6 +94,9 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '500':
+          description: Internal Server Error
+          content: {}
       operationId: getQuestion
       description: getEachQuestion
       tags:
@@ -105,7 +112,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Question'
+                $ref: '#/components/schemas/QuestionResponse'
                 x-examples:
                   Example 1:
                     id: cfb56d06-6f7d-f9c3-96a4-2e7a32dc0499
@@ -275,6 +282,8 @@ paths:
           description: Forbidden
         '404':
           description: Not Found
+        '500':
+          description: Internal Server Error
       operationId: get-users-userId
       requestBody:
         content: {}
@@ -341,108 +350,6 @@ components:
       required:
         - id
         - name
-    Question:
-      title: Question
-      x-stoplight:
-        id: hvpx823utxm8l
-      type: object
-      properties:
-        id:
-          type: string
-        owner:
-          $ref: '#/components/schemas/User'
-          x-stoplight:
-            id: 703oofih1m7b5
-        title:
-          type: string
-          x-stoplight:
-            id: fhdxz2jykh2pl
-        content:
-          type: string
-          x-stoplight:
-            id: btllo6w5gvkxf
-        answer_content:
-          type: string
-          x-stoplight:
-            id: aw8pp5r74ckfv
-        created_at:
-          type: string
-          x-stoplight:
-            id: ef6xw4o8n9cw9
-        tags:
-          x-stoplight:
-            id: a48eui9xj1nmt
-          type: array
-          items:
-            $ref: '#/components/schemas/TagInput'
-            x-stoplight:
-              id: t0ykxdqcwq8kh
-        difficulty:
-          type: integer
-          x-stoplight:
-            id: 3nzc7h6g083n7
-          minimum: 1
-          maximum: 5
-        upvote_count:
-          type: integer
-          x-stoplight:
-            id: mue44zs2a6hfy
-          minimum: 0
-      required:
-        - id
-        - owner
-        - title
-        - content
-        - answer_content
-        - created_at
-        - difficulty
-        - upvote_count
-      x-tags:
-        - Question
-    QuestionInput:
-      title: QuestionInput
-      x-stoplight:
-        id: l09pestmrw4kf
-      type: object
-      properties:
-        owner:
-          $ref: '#/components/schemas/UserInput'
-          x-stoplight:
-            id: edrwwm3v3is5g
-        title:
-          type: string
-          x-stoplight:
-            id: mfqg9una84oo2
-        content:
-          type: string
-          x-stoplight:
-            id: s33x45iy1ye4r
-        answer_content:
-          type: string
-          x-stoplight:
-            id: nmolck1ipniuj
-        tags:
-          type: array
-          x-stoplight:
-            id: e4f8jgv4rs8yy
-          items:
-            $ref: '#/components/schemas/TagInput'
-            x-stoplight:
-              id: u9cfw0cejd530
-        difficulty:
-          type: integer
-          x-stoplight:
-            id: 3cctg9vztlz9h
-          maximum: 5
-          minimum: 1
-      required:
-        - owner
-        - title
-        - content
-        - answer_content
-        - difficulty
-      x-tags:
-        - Question
     TagInput:
       title: TagInput
       x-stoplight:
@@ -509,58 +416,167 @@ components:
         - content
       x-tags:
         - Comment
-    Questions:
-      title: Questions
+    QuestionInput:
+      title: QuestionInput
       x-stoplight:
-        id: w38d7szy7m0vl
+        id: l09pestmrw4kf
       type: object
       properties:
-        total:
-          type: integer
+        owner:
+          $ref: '#/components/schemas/UserInput'
           x-stoplight:
-            id: 0jdipsinjty9z
-        questions:
+            id: edrwwm3v3is5g
+        title:
+          type: string
+          x-stoplight:
+            id: mfqg9una84oo2
+        content:
+          type: string
+          x-stoplight:
+            id: s33x45iy1ye4r
+        answer_content:
+          type: string
+          x-stoplight:
+            id: nmolck1ipniuj
+        tags:
           type: array
           x-stoplight:
-            id: kugnp47mz8bdp
+            id: e4f8jgv4rs8yy
           items:
-            $ref: '#/components/schemas/Question'
+            $ref: '#/components/schemas/TagInput'
             x-stoplight:
-              id: 4on62932t25af
-      description: Questions
+              id: u9cfw0cejd530
+        difficulty:
+          type: integer
+          x-stoplight:
+            id: 3cctg9vztlz9h
+          maximum: 5
+          minimum: 1
+      required:
+        - owner
+        - title
+        - content
+        - answer_content
+        - difficulty
       x-tags:
         - Question
-    Comments:
-      title: Comments
+    QuestionResponse:
+      title: QuestionResponse
       x-stoplight:
-        id: 7ho4we0q8fd1k
+        id: l0ef0el5li8iv
       type: object
-      description: Comments
+      x-tags:
+        - Question
       properties:
-        total:
+        id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/User'
+        title:
+          type: string
+          x-stoplight:
+            id: kqzr85j6vm5g9
+        content:
+          type: string
+          x-stoplight:
+            id: u8jgecueu6jd5
+        answer_content:
+          type: string
+          x-stoplight:
+            id: f6i4k6j5ra3so
+        created_at:
+          type: string
+          x-stoplight:
+            id: eyk3q0kyg0uon
+        difficulty:
           type: integer
           x-stoplight:
-            id: 21d1otxu4f54i
-        comments:
+            id: j7xige49tv4t1
+        upvote_count:
+          type: integer
+          x-stoplight:
+            id: ngli4k26h4rdg
+      required:
+        - id
+        - title
+        - content
+        - answer_content
+        - created_at
+        - difficulty
+        - upvote_count
+    Question:
+      title: Question
+      x-stoplight:
+        id: qezdhk8e0va4y
+      type: object
+      x-tags:
+        - Question
+      properties:
+        id:
+          type: string
+        owner:
+          $ref: '#/components/schemas/User'
+          x-stoplight:
+            id: 2eumvokz6c9xu
+        title:
+          type: string
+          x-stoplight:
+            id: zoc2nzdfv34oc
+        content:
+          type: string
+          x-stoplight:
+            id: afe08chzagqy0
+        answer_content:
+          type: string
+          x-stoplight:
+            id: rpavolps5bpcs
+        created_at:
+          type: string
+          x-stoplight:
+            id: ldhfoz5myp5m8
+        tags:
           type: array
           x-stoplight:
-            id: 98hihcrqxjhcy
+            id: dxnmq4coxfak2
           items:
-            $ref: '#/components/schemas/Comment'
+            $ref: '#/components/schemas/Tag'
             x-stoplight:
-              id: wnzpzb8fue0t5
-      x-tags:
-        - Comment
+              id: oxdxbphtuamb2
+        difficulty:
+          type: integer
+          x-stoplight:
+            id: rnbskoinpbe1s
+        upvote_count:
+          type: integer
+          x-stoplight:
+            id: bwtwny8wwro9x
+      required:
+        - id
+        - owner
+        - title
+        - content
+        - answer_content
+        - created_at
+        - difficulty
+        - upvote_count
   responses:
     Questions:
       description: QuestionsResponse
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Questions'
+            type: array
+            items:
+              $ref: '#/components/schemas/QuestionResponse'
+              x-stoplight:
+                id: ygri2vyxeo3vu
     Comments:
       description: CommentsResponse
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Comments'
+            type: array
+            items:
+              $ref: '#/components/schemas/Comment'
+              x-stoplight:
+                id: 25zcrc58p7fai
